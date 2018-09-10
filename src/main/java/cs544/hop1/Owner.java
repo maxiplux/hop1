@@ -1,14 +1,12 @@
 package cs544.hop1;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Owner {
@@ -16,8 +14,9 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    @OneToMany (cascade={CascadeType.PERSIST})
+    @OneToMany (cascade={CascadeType.PERSIST},fetch= FetchType.EAGER)
     @JoinColumn (name="clientid")
+    //@BatchSize(size = 50)
     private List<Pet> pets;
     
 	public Owner() {
@@ -38,9 +37,11 @@ public class Owner {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public List<Pet> getPets() {
 		return pets;
 	}
+
 	public void setPets(List<Pet> pets) {
 		this.pets = pets;
 	}
